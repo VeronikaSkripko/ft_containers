@@ -1,3 +1,5 @@
+//valgrind --tool=memcheck --leak-check=yes --show-reachable=yes ./a.out
+
 #ifndef FT_CONTAINERS_VECTOR_HPP
 #define FT_CONTAINERS_VECTOR_HPP
 
