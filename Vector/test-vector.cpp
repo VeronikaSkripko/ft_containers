@@ -1,3 +1,5 @@
+//leaks --atExit -- ./a.out
+
 #include <iostream>
 #include "Vector.hpp"
 #include "vector"

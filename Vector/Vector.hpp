@@ -1,5 +1,3 @@
-//valgrind --tool=memcheck --leak-check=yes --show-reachable=yes ./a.out
-
 #ifndef FT_CONTAINERS_VECTOR_HPP
 #define FT_CONTAINERS_VECTOR_HPP
 
@@ -11,7 +9,6 @@
 
 template <class T, class Allocator = std::allocator<T> >
 class Vector {
-
 public:
 	typedef T											value_type;
 	typedef Allocator									allocator_type;
@@ -390,18 +387,10 @@ public:
 			_alloc.destroy(&v_data[_size-- - 1]);
 	}
 
-//	void swap (Vector& a)
-//	{
-//		ft::swap(v_data, a.v_data);
-//		ft::swap(_size, a.size());
-//		ft::swap( _capacity, a.capacity());
-//		ft::swap( _alloc, a.get_allocator());
-//	}
-
 	void swap (Vector& x) {
-		Vector tmp(x);
-		x = *this;
-		*this = tmp;
+		ft::swap(v_data, x.v_data);
+		ft::swap(_size, x._size);
+		ft::swap(_capacity, x._capacity);
 	}
 
 	void clear()

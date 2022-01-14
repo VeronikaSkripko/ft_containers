@@ -1,3 +1,5 @@
+//leaks --atExit -- ./a.out
+
 #include <map>
 #include <iostream>
 #include "Map/Map.hpp"
@@ -53,7 +55,6 @@ void ft_assert(const T &lhs, const T &rhs)
 
 double time_test_ft()
 {
-
 	clock_t start, end;
 	Map<int, int> map;
 	start = clock();
@@ -734,23 +735,23 @@ void map_equalrange_check()
 	ft_assert(ret.first->first, ret_ft.first->first);
 	ft_assert(ret.second->second, ret_ft.second->second);
 }
-//void map_getallocator_check()
-//{
-//	std::cout << "\n|==============================GET_ALLOCATOR=================================|" << std::endl;
-//	int psize;
-//	std::map<char,int> mymap;
-//	std::pair<const char,int>* p;
-//	p=mymap.get_allocator().allocate(5);
-//	psize = sizeof(std::map<char,int>::value_type)*5;
-//	Map<char,int> mymap_ft;
-//	ft::pair<const char,int>* p_ft;
-//	p_ft = mymap_ft.get_allocator().allocate(5);
-//	int psize_ft = sizeof(Map<char,int>::value_type)*5;
-//	ft_assert(psize, psize_ft);
-//	mymap_ft.get_allocator().deallocate(p_ft,5);
-//	mymap.get_allocator().deallocate(p,5);
-//
-//}
+void map_getallocator_check()
+{
+	std::cout << "\n|==============================GET_ALLOCATOR=================================|" << std::endl;
+	int psize;
+	std::map<char,int> mymap;
+	std::pair<const char,int>* p;
+	p=mymap.get_allocator().allocate(5);
+	psize = sizeof(std::map<char,int>::value_type)*5;
+	Map<char,int> mymap_ft;
+	ft::pair<const char,int>* p_ft;
+	p_ft = mymap_ft.get_allocator().allocate(5);
+	int psize_ft = sizeof(Map<char,int>::value_type)*5;
+	ft_assert(psize, psize_ft);
+	mymap_ft.get_allocator().deallocate(p_ft,5);
+	mymap.get_allocator().deallocate(p,5);
+
+}
 
 void map_iterator_check()
 {
@@ -874,7 +875,6 @@ void map_iterator_check()
 
 int main()
 {
-
 	map_benchmark();
 	map_con_check();
 	map_begin_check();
@@ -891,6 +891,39 @@ int main()
 	map_count_check();
 	map_lowerbound_check();
 	map_equalrange_check();
-	//	map_getallocator_check();
+	map_getallocator_check();
 	map_iterator_check();
+
+	std::cout << "\n|===============================SAME KEY==================================|" << std::endl;
+	std::map<char,int> mymap;
+	mymap.insert ( std::pair<char,int>('a',100) );
+	mymap.insert ( std::pair<char,int>('z',200) );
+	std::pair<std::map<char,int>::iterator,bool> ret;
+	ret = mymap.insert ( std::pair<char,int>('z',500) );
+	if (ret.second==false) {
+		std::cout << "element 'z' already existed";
+		std::cout << " with a value of " << ret.first->second << '\n';
+	}
+	mymap.insert (std::pair<char,int>('c',400));
+	mymap.insert (std::pair<char,int>('b',300));
+	std::map<char,int>::iterator it = mymap.begin();
+	std::cout << "mymap contains:\n";
+	for (it=mymap.begin(); it!=mymap.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
+
+	Map<char,int> ft_mymap;
+	ft_mymap.insert ( ft::pair<char,int>('a',100) );
+	ft_mymap.insert ( ft::pair<char,int>('z',200) );
+	ft::pair<Map<char,int>::iterator,bool> ft_ret;
+	ft_ret = ft_mymap.insert ( ft::pair<char,int>('z',500) );
+	if (ft_ret.second==false) {
+		std::cout << "element 'z' already existed";
+		std::cout << " with a value of " << ft_ret.first->second << '\n';
+	}
+	ft_mymap.insert (ft::pair<char,int>('c',400));
+	ft_mymap.insert (ft::pair<char,int>('b',300));
+	Map<char,int>::iterator ft_it = ft_mymap.begin();
+	std::cout << "ft_mymap contains:\n";
+	for (ft_it=ft_mymap.begin(); ft_it!=ft_mymap.end(); ++ft_it)
+		std::cout << ft_it->first << " => " << ft_it->second << '\n';
 }

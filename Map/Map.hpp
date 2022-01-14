@@ -2,7 +2,6 @@
 #define FT_CONTAINERS_MAP_HPP
 
 #include "Pair.hpp"
-#include "MapIterator.hpp"
 #include "Base.hpp"
 
 template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
@@ -27,6 +26,7 @@ public:
 	typedef typename rep_type::const_iterator                                       const_iterator;
 	typedef typename rep_type::reverse_iterator                                     reverse_iterator;
 	typedef typename rep_type::reverse_iterator                                     const_reverse_iterator;
+
 	class value_compare : public ft::binary_function<value_type, value_type, bool>
 	{
 		friend class Map<Key, T, Compare, Alloc>;
@@ -36,10 +36,11 @@ public:
 	public:
 		bool operator()(const value_type& x, const value_type& y) const { return comp(x.first, y.first); }
 	};
-	Map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : root(comp, alloc) { };
-	Map(const value_type& p) : root(){ root.insert_unique(p); }
+
+	Map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : root(comp, alloc) {};
+	Map(const value_type& p) : root() {root.insert_unique(p);}
 	template<typename InputIterator>
-	Map(InputIterator first, InputIterator last) : root() { root.insert_unique(first, last); }
+	Map(InputIterator first, InputIterator last) : root() {root.insert_unique(first, last);}
 	Map (const Map& x, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : root(x.root, comp, alloc) { }
 	~Map() { root.~TreeRB(); }
 
@@ -83,50 +84,38 @@ public:
 		return (*i).second;
 	}
 	template<typename _K1, typename _T1, typename _C1, typename _A1>
-	friend bool                                 operator==(const Map<_K1, _T1, _C1, _A1>&,
-														   const Map<_K1, _T1, _C1, _A1>&);
+	friend bool operator==(const Map<_K1, _T1, _C1, _A1>&, const Map<_K1, _T1, _C1, _A1>&);
 	template<typename _K1, typename _T1, typename _C1, typename _A1>
-	friend bool                                 operator<(const Map<_K1, _T1, _C1, _A1>&,
-														  const Map<_K1, _T1, _C1, _A1>&);
+	friend bool operator<(const Map<_K1, _T1, _C1, _A1>&, const Map<_K1, _T1, _C1, _A1>&);
 
 };
 template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
-bool    operator==(const Map<_Key, _Tp, _Compare, _Alloc>& __x,
-				   const Map<_Key, _Tp, _Compare, _Alloc>& __y)
-{ return __x.root == __y.root; }
+bool operator==(const Map<_Key, _Tp, _Compare, _Alloc>& __x, const Map<_Key, _Tp, _Compare, _Alloc>& __y)
+{return __x.root == __y.root;}
 
 template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
-bool    operator<(const Map<_Key, _Tp, _Compare, _Alloc>& __x,
-				  const Map<_Key, _Tp, _Compare, _Alloc>& __y)
-{ return __x.root < __y.root; }
+bool operator<(const Map<_Key, _Tp, _Compare, _Alloc>& __x, const Map<_Key, _Tp, _Compare, _Alloc>& __y)
+{return __x.root < __y.root;}
 
 template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
-bool    operator!=(const Map<_Key, _Tp, _Compare, _Alloc>& x,
-				   const Map<_Key, _Tp, _Compare, _Alloc>& y)
-{ return !(x == y); }
-
-/// Based on operator<
-template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
-bool    operator>(const Map<_Key, _Tp, _Compare, _Alloc>& x,
-				  const Map<_Key, _Tp, _Compare, _Alloc>& y)
-{ return y < x; }
-
-/// Based on operator<
-template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
-bool    operator<=(const Map<_Key, _Tp, _Compare, _Alloc>& x,
-				   const Map<_Key, _Tp, _Compare, _Alloc>& y)
-{ return !(y < x); }
-
-/// Based on operator<
-template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
-bool    operator>=(const Map<_Key, _Tp, _Compare, _Alloc>& x,
-				   const Map<_Key, _Tp, _Compare, _Alloc>& y)
-{ return !(x < y); }
+bool operator!=(const Map<_Key, _Tp, _Compare, _Alloc>& x, const Map<_Key, _Tp, _Compare, _Alloc>& y)
+{return !(x == y);}
 
 template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
-void    swap(Map<_Key, _Tp, _Compare, _Alloc>& x,
-			 Map<_Key, _Tp, _Compare, _Alloc>& y)
-{ x.swap(y); }
+bool operator>(const Map<_Key, _Tp, _Compare, _Alloc>& x, const Map<_Key, _Tp, _Compare, _Alloc>& y)
+{return y < x;}
 
+
+template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
+bool operator<=(const Map<_Key, _Tp, _Compare, _Alloc>& x, const Map<_Key, _Tp, _Compare, _Alloc>& y)
+{return !(y < x);}
+
+template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
+bool    operator>=(const Map<_Key, _Tp, _Compare, _Alloc>& x, const Map<_Key, _Tp, _Compare, _Alloc>& y)
+{return !(x < y);}
+
+template<typename _Key, typename _Tp, typename _Compare, typename _Alloc>
+void swap(Map<_Key, _Tp, _Compare, _Alloc>& x,  Map<_Key, _Tp, _Compare, _Alloc>& y)
+{x.swap(y);}
 
 #endif

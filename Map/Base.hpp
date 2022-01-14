@@ -2,9 +2,11 @@
 #define FT_CONTAINERS_BASE_HPP
 
 #include <iostream>
-#include "/Users/nika_skripko/Documents/Veronika/school/ft_containers/ft_utils.h"
+#include "../ft_utils.h"
 #include "MapIterator.hpp"
 #include "../Vector/ReverseIterator.hpp"
+
+//https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
 
 namespace ft
 {
@@ -86,8 +88,7 @@ namespace ft
 		_const_link_type        _M_begin() const { return (static_cast<_const_link_type>(header.parent)); }
 		_base_ptr               _M_end() { return (&header); }
 		_const_base_ptr         _M_end() const { return (&header); }
-		iterator                _M_lower_bound(_link_type x, _base_ptr y,
-											   const Key& k)
+		iterator                _M_lower_bound(_link_type x, _base_ptr y, const Key& k)
 		{
 			while (x != 0)
 				if (!_comp(_S_key(x), k))
@@ -96,8 +97,7 @@ namespace ft
 					x = _S_right(x);
 			return iterator(y);
 		}
-		const_iterator          _M_lower_bound(_const_link_type x, _const_base_ptr y,
-											   const Key& k) const
+		const_iterator _M_lower_bound(_const_link_type x, _const_base_ptr y, const Key& k) const
 		{
 			while (x != 0)
 				if (!_comp(_S_key(x), k))
@@ -106,9 +106,7 @@ namespace ft
 					x = _S_right(x);
 			return const_iterator(y);
 		}
-
-		iterator                _M_upper_bound(_link_type x, _base_ptr y,
-											   const Key& k)
+		iterator _M_upper_bound(_link_type x, _base_ptr y, const Key& k)
 		{
 			while (x != 0)
 				if (_comp(k, _S_key(x)))
@@ -117,9 +115,7 @@ namespace ft
 					x = _S_right(x);
 			return iterator(y);
 		}
-
-		const_iterator          _M_upper_bound(_const_link_type x, _const_base_ptr y,
-											   const Key& k) const
+		const_iterator _M_upper_bound(_const_link_type x, _const_base_ptr y, const Key& k) const
 		{
 			while (x != 0)
 				if (_comp(k, _S_key(x)))
@@ -128,14 +124,14 @@ namespace ft
 					x = _S_right(x);
 			return const_iterator(y);
 		}
-		void                    _M_reset()
+		void _M_reset()
 		{
 			header.parent = 0;
 			header.left = &header;
 			header.right = &header;
 			_node_count = 0;
 		}
-		void                    _M_move_data(TreeRB& from)
+		void _M_move_data(TreeRB& from)
 		{
 			header.color = from.header.color;
 			header.parent = from.header.parent;
@@ -146,22 +142,21 @@ namespace ft
 			from._M_reset();
 		}
 
-		void                   _M_drop_node(_link_type p)
+		void  _M_drop_node(_link_type p)
 		{
 			_node_alloc.destroy(p);
 			_node_alloc.deallocate(p, 1);
 		}
 
-		void                   _M_erase_aux(const_iterator position)
+		void _M_erase_aux(const_iterator position)
 		{
-			_link_type y = static_cast<_link_type>(rb_tree_rebalance_for_erase
-					(const_cast<_base_ptr>(position._node),
+			_link_type y = static_cast<_link_type>(rb_tree_rebalance_for_erase (const_cast<_base_ptr>(position._node),
 					 this->header));
 			_M_drop_node(y);
 			--_node_count;
 		}
 
-		void                   _M_erase(_link_type x)
+		void _M_erase(_link_type x)
 		{
 			// Erase without rebalancing.
 			while (x != 0)
@@ -172,7 +167,7 @@ namespace ft
 				x = y;
 			}
 		}
-		void                    _M_erase_aux(const_iterator first, const_iterator last)
+		void  _M_erase_aux(const_iterator first, const_iterator last)
 		{
 			if (first == begin() && last == end())
 				clear();
@@ -181,7 +176,7 @@ namespace ft
 					_M_erase_aux(first++);
 		}
 
-		_link_type        _M_clone_node(_const_link_type x)
+		_link_type _M_clone_node(_const_link_type x)
 		{
 			_link_type tmp = _node_alloc.allocate(1);
 			_node_alloc.construct(tmp, *x);
@@ -190,7 +185,7 @@ namespace ft
 			tmp->right = 0;
 			return tmp;
 		}
-		_link_type        _M_copy(_const_link_type x, _base_ptr p)
+		_link_type _M_copy(_const_link_type x, _base_ptr p)
 		{
 			// Structural copy. x and p must be non-null.
 			_link_type top = _M_clone_node(x);
@@ -212,7 +207,7 @@ namespace ft
 			return top;
 		}
 
-		_link_type        _M_copy(const TreeRB& x)
+		_link_type _M_copy(const TreeRB& x)
 		{
 			_link_type root = _M_copy(x._M_begin(), _M_end());
 			_M_leftmost() = _S_minimum(root);
@@ -221,8 +216,7 @@ namespace ft
 			return root;
 		}
 
-		rb_tree_node_base *     rb_tree_rebalance_for_erase(rb_tree_node_base* const z,
-															rb_tree_node_base& header) throw ()
+		rb_tree_node_base* rb_tree_rebalance_for_erase(rb_tree_node_base* const z, rb_tree_node_base& header) throw ()
 		{
 			rb_tree_node_base *& root = header.parent;
 			rb_tree_node_base *& leftmost = header.left;
@@ -380,8 +374,7 @@ namespace ft
 			return y;
 		}
 
-		ft::pair<_base_ptr, _base_ptr>  _M_get_insert_hint_unique_pos(const_iterator position,
-																	  const key_type& k)
+		ft::pair<_base_ptr, _base_ptr>  _M_get_insert_hint_unique_pos(const_iterator position, const key_type& k)
 		{
 			iterator pos = position._M_const_cast();
 			typedef pair<_base_ptr, _base_ptr> res;
@@ -478,7 +471,7 @@ namespace ft
 			clear();
 			insert_unique(x.begin(), x.end());
 		}
-		void                      clear()
+		void clear()
 		{
 			_M_erase(_M_begin());
 			_M_reset();
@@ -493,7 +486,7 @@ namespace ft
 			return res(iterator(_res.first), false);
 		}
 
-		iterator                  insert_unique(const_iterator position, const Val& v)
+		iterator insert_unique(const_iterator position, const Val& v)
 		{
 			pair<_base_ptr, _base_ptr> res = _M_get_insert_hint_unique_pos(position, KeyOfValue()(v));
 			if (res.second)
@@ -502,16 +495,15 @@ namespace ft
 		}
 
 		template<class II>
-		void                      insert_unique(II first, II last)
+		void insert_unique(II first, II last)
 		{
 			for (; first != last; ++first)
 				insert_unique(end(), *first);
 		}
 
-		iterator                  insert(_base_ptr x, _base_ptr p, const Val& v)
+		iterator insert(_base_ptr x, _base_ptr p, const Val& v)
 		{
-			bool insert_left = (x != 0 || p == _M_end()
-								|| _comp(KeyOfValue()(v), _S_key(p)));
+			bool insert_left = (x != 0 || p == _M_end()	|| _comp(KeyOfValue()(v), _S_key(p)));
 			_link_type z = _node_alloc.allocate(1);
 			_node_alloc.construct(z, v);
 			rb_tree_insert_and_rebalance(insert_left, z, p, header);
@@ -519,9 +511,7 @@ namespace ft
 			return iterator(z);
 		}
 
-		void                      rb_tree_insert_and_rebalance(const bool          insert_left,
-															   rb_tree_node_base* x,
-															   rb_tree_node_base* p,
+		void rb_tree_insert_and_rebalance(const bool insert_left, rb_tree_node_base* x, rb_tree_node_base* p,
 															   rb_tree_node_base& header) throw ()
 		{
 			rb_tree_node_base *& _root = header.parent;
@@ -553,8 +543,7 @@ namespace ft
 					header.right = x; // maintain _M_rightmost pointing to max node
 			}
 			// Rebalance.
-			while (x != _root
-				   && x->parent->color == RED)
+			while (x != _root  && x->parent->color == RED)
 			{
 				rb_tree_node_base* const xpp = x->parent->parent;
 				if (x->parent == xpp->left)
@@ -605,7 +594,7 @@ namespace ft
 			_root->color = BLACK;
 		}
 
-		void                      rotate_left(rb_tree_node_base* const x, rb_tree_node_base*& root)
+		void rotate_left(rb_tree_node_base* const x, rb_tree_node_base*& root)
 		{
 			rb_tree_node_base* const y = x->right;
 			x->right = y->left;
@@ -622,8 +611,7 @@ namespace ft
 			x->parent = y;
 		}
 
-		void                      rotate_right(rb_tree_node_base* const x,
-											   rb_tree_node_base*& root)
+		void rotate_right(rb_tree_node_base* const x,  rb_tree_node_base*& root)
 		{
 			rb_tree_node_base* const y = x->left;
 			x->left = y->right;
@@ -656,13 +644,10 @@ namespace ft
 					_base_ptr yu(y);
 					y = x, x = _S_left(x);
 					xu = _S_right(xu);
-					return ft::pair<iterator,
-							iterator>(_M_lower_bound(x, y, k),
-									  _M_upper_bound(xu, yu, k));
+					return ft::pair<iterator, iterator>(_M_lower_bound(x, y, k), _M_upper_bound(xu, yu, k));
 				}
 			}
-			return ft::pair<iterator, iterator>(iterator(y),
-												iterator(y));
+			return ft::pair<iterator, iterator>(iterator(y), iterator(y));
 		}
 
 		pair<const_iterator, const_iterator>  equal_range(const Key& k) const
@@ -681,16 +666,13 @@ namespace ft
 					_const_base_ptr yu(y);
 					y = x, x = _S_left(x);
 					xu = _S_right(xu);
-					return ft::pair<const_iterator,
-							const_iterator>(_M_lower_bound(x, y, k),
-											_M_upper_bound(xu, yu, k));
+					return ft::pair<const_iterator, const_iterator>(_M_lower_bound(x, y, k), _M_upper_bound(xu, yu, k));
 				}
 			}
-			return ft::pair<const_iterator, const_iterator>(const_iterator(y),
-															const_iterator(y));
+			return ft::pair<const_iterator, const_iterator>(const_iterator(y), const_iterator(y));
 		}
 
-		void                      swap(TreeRB& t)
+		void swap(TreeRB& t)
 		{
 			if (_M_root() == 0)
 			{
@@ -710,72 +692,68 @@ namespace ft
 			}
 			// No need to swap header's color as it does not change.
 			ft::swap(this->_comp, t._comp);
-			//   _Alloc_traits::_S_on_swap(_M_get_Node_allocator(),
-			//                             t._M_get_Node_allocator());
+			//   _Alloc_traits::_S_on_swap(_M_get_Node_allocator(), t._M_get_Node_allocator());
 		}
-		size_type                 erase(const Key& x)
+		size_type erase(const Key& x)
 		{
 			ft::pair<iterator, iterator> p = equal_range(x);
 			const size_type old_size = size();
 			_M_erase_aux(p.first, p.second);
 			return old_size - size();
 		}
-		void                        erase(iterator first, iterator last)
+		void erase(iterator first, iterator last)
 		{
 			_M_erase_aux(first, last);
 		}
 
-		void                        erase(iterator position)
+		void erase(iterator position)
 		{
 			_M_erase_aux(position);
 		}
-		void                        erase(const Key* first, const Key* last)
+		void erase(const Key* first, const Key* last)
 		{
 			while (first != last)
 				erase(*first++);
 		}
-		iterator                    find(const Key& k)
+		iterator find(const Key& k)
 		{
 			iterator j = _M_lower_bound(_M_begin(), _M_end(), k);
-			return (j == end()
-					|| _comp(k, _S_key(j._node))) ? end() : j;
+			return (j == end() || _comp(k, _S_key(j._node))) ? end() : j;
 		}
 
-		const_iterator              find(const Key& k) const
+		const_iterator find(const Key& k) const
 		{
 			const_iterator j = _M_lower_bound(_M_begin(), _M_end(), k);
 			return (j == end()
 					|| _comp(k, _S_key(j._node))) ? end() : j;
 		}
 
-		size_type                   count(const Key& k) const
+		size_type count(const Key& k) const
 		{
 			ft::pair<const_iterator, const_iterator> p = equal_range(k);
 			const size_type n = ft::distance(p.first, p.second);
 			return n;
 		}
-		bool    operator==(const TreeRB& y) const
+		bool operator==(const TreeRB& y) const
 		{
-			return size() == y.size()
-				   && ft::equal(begin(), end(), y.begin());
+			return size() == y.size()  && ft::equal(begin(), end(), y.begin());
 		}
 
-		bool    operator<(const TreeRB& y) const
+		bool operator<(const TreeRB& y) const
 		{
-			return ft::lexicographical_compare(begin(), end(),
-											   y.begin(), y.end());
+			return ft::lexicographical_compare(begin(), end(),  y.begin(), y.end());
 		}
 
-		bool    operator!=(const TreeRB& y) const
+		bool operator!=(const TreeRB& y) const
 		{ return !(*this == y); }
 
-		bool    operator>(const TreeRB& y) const
+		bool operator>(const TreeRB& y) const
 		{ return y < *this; }
 
-		bool    operator<=(const TreeRB& y) const
+		bool operator<=(const TreeRB& y) const
 		{ return !(y < *this); }
 
-		bool    operator>=(const TreeRB& y) const
+		bool operator>=(const TreeRB& y) const
 		{ return !(*this < y); }
 	};
 }

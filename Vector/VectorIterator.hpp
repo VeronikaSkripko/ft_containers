@@ -18,10 +18,8 @@ public:
 	typedef typename traits_type::reference             reference;
 	typedef typename traits_type::pointer               pointer;
 
-	VectorIterator() : current(Iterator())
-	{}
-	VectorIterator(const Iterator& i) : current(i)
-	{}
+	VectorIterator() : current(Iterator()){}
+	VectorIterator(const Iterator& i) : current(i){}
 	// Allow iterator to const_iterator conversion
 	template<typename _Iter>
 	VectorIterator(const VectorIterator<_Iter>& src) : current(src.base()) {}

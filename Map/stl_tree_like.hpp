@@ -5,6 +5,7 @@
 #define BLACK true
 
 //stl_tree.h
+//https://gcc.gnu.org/onlinedocs/gcc-4.6.4/libstdc++/api/a01080.html#abefce699d5d983b67222537c6e5831d4
 
 namespace ft {
 	struct rb_tree_node_base {

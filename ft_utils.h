@@ -308,16 +308,15 @@ namespace ft {
 	}
 
 	template<typename _II1, typename _II2>
-	bool
-	equal(_II1 first1, _II1 last1, _II2 first2) {
+	bool equal(_II1 first1, _II1 last1, _II2 first2) {
 		return ft::equal_aux(first1, last1, first2);
 	}
 
 	template <class arg, class result>
 	struct unary_function
 	{
-		typedef arg argument_type;   ///< @c argument_type is the type of the
-		typedef result result_type;  ///< @c result_type is the return type
+		typedef arg argument_type;
+		typedef result result_type;
 	};
 
 	template<typename Arg1, typename Arg2, typename Result>
@@ -329,16 +328,14 @@ namespace ft {
 	};
 
 	template <class Pair>
-	struct Select1st : public unary_function<Pair,
-			typename Pair::first_type>
+	struct Select1st : public unary_function<Pair, typename Pair::first_type>
 	{
 		typename Pair::first_type&       operator()(Pair& x) const { return x.first; }
 		const typename Pair::first_type& operator()(const Pair& x) const  { return x.first; }
 	};
 
 	template <class Pair>
-	struct Select2nd : public unary_function<Pair,
-			typename Pair::second_type>
+	struct Select2nd : public unary_function<Pair, typename Pair::second_type>
 	{
 		typename Pair::second_type&        operator()(Pair& x) const { return x.second; }
 		const typename Pair::second_type&  operator()(const Pair& x) const { return x.second; }

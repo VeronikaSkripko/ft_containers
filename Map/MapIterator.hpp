@@ -1,7 +1,7 @@
 #ifndef FT_CONTAINERS_MAPITERATOR_HPP
 #define FT_CONTAINERS_MAPITERATOR_HPP
 
-#include "/Users/nika_skripko/Documents/Veronika/school/ft_containers/ft_utils.h"
+#include "../ft_utils.h"
 #include "stl_tree_like.hpp"
 
 template <class ValueType>
@@ -61,7 +61,7 @@ public:
 	typedef const ValueType*                                                        pointer;
 	typedef typename ft::iterator<iterator_category, value_type>::difference_type   difference_type;
 
-	typedef MapConstIterator<ValueType>                                         _self;
+	typedef MapConstIterator<ValueType>                                         	_self;
 	typedef ft::rb_tree_node_base::_const_base_ptr                                 _base_ptr;
 	typedef const ft::stl_tree_like<ValueType>*                                     _link_type;
 
@@ -92,25 +92,25 @@ public:
 };
 
 template <class ValueType>
-MapIterator<ValueType>                       operator+(int a, MapIterator<ValueType> b)
+MapIterator<ValueType> operator+(int a, MapIterator<ValueType> b)
 {
 	return (b.base() + a);
 }
 
 template <class ValueType>
-MapConstIterator<ValueType>                  operator+(int a, MapConstIterator<ValueType> b)
+MapConstIterator<ValueType> operator+(int a, MapConstIterator<ValueType> b)
 {
 	return (b.base() + a);
 }
 
 template<typename Val>
-bool                                            operator==(const MapIterator<Val>& x, const MapConstIterator<Val>& y)
+bool operator==(const MapIterator<Val>& x, const MapConstIterator<Val>& y)
 {
 	return x._node == y._node;
 }
 
 template<typename Val>
-bool                                            operator!=(const MapIterator<Val>& x, const MapConstIterator<Val>& y)
+bool operator!=(const MapIterator<Val>& x, const MapConstIterator<Val>& y)
 {
 	return x._node != y._node;
 }
