@@ -1,15 +1,7 @@
-//leaks --atExit -- ./a.out
-
 #include <iostream>
 #include "Vector.hpp"
 #include "vector"
 #include "iterator"
-
-#include <map>
-// #include "pair.hpp"
-#include <iostream>
-
-#include <unistd.h>
 #include <ctime>
 #include <stdio.h>
 
@@ -188,7 +180,12 @@ void vector_constructor_check()
 	bool res = true;
 	int myints[] = {16, 2, 77, 29};
 
-	std::vector<int> first_std;
+	strst_std;
+	std::vector<int> second_std(4, 100);
+	std::vector<int> third_std(second_std.begin(), second_std.end());
+	std::vector<int> fourth_std(third_std);
+	std::vector<int> fifth_std(myints, myints + sizeof(myints) / sizeof(int));
+	Vector<int> first_ft;d::vector<int> first_std;
 	std::vector<int> second_std(4, 100);
 	std::vector<int> third_std(second_std.begin(), second_std.end());
 	std::vector<int> fourth_std(third_std);
@@ -705,7 +702,7 @@ void vector_operators_check()
 
 int main()
 {
-//	vector_benchmark();
+	vector_benchmark();
 	vector_constructor_check();
 	vector_begin_check();
 	vector_rbegin_check();

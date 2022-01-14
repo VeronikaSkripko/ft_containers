@@ -1,16 +1,9 @@
-//leaks --atExit -- ./a.out
-
 #include <map>
 #include <iostream>
-#include "Map/Map.hpp"
-#include "Vector/Vector.hpp"
-#include "ft_utils.h"
-#include <unistd.h>
-#include <vector>
+#include "Map.hpp"
 #include <ctime>
 #include <stdio.h>
 #include <string>
-#include <sstream>
 
 #define RST "\x1B[0m"
 #define KRED "\x1B[31m"
@@ -805,8 +798,8 @@ void map_iterator_check()
 	for (; const_it_ft != map_ft.begin(); const_it_ft--, const_it_std--)
 	{
 		ft_assert(const_it_ft->first, const_it_std->first);
-		// const_it_ft->second = 'a';
-		// const_it_std->second = 'a';
+//		 const_it_ft->second = 'a';
+//		 const_it_std->second = 'a';
 	}
 	ft_assert(it_ft->first, it_std->first);
 	std::cout << std::endl;
@@ -866,10 +859,10 @@ void map_iterator_check()
 	std::cout << std::endl;
 	rev_it_ft = map_ft.rbegin();
 	rev_it_std = map_std.rbegin();
-	//	ft_assert((--rev_it_std.base())->first, (--rev_it_ft.base())->first);
+	ft_assert((--rev_it_std.base())->first, (--rev_it_ft.base())->first);
 	rev_it_ft = map_ft.rend();
 	rev_it_std = map_std.rend();
-	//	ft_assert((rev_it_std.base())->first, (rev_it_ft.base())->first);
+	ft_assert((rev_it_std.base())->first, (rev_it_ft.base())->first);
 	std::cout << std::endl;
 }
 
@@ -900,7 +893,7 @@ int main()
 	mymap.insert ( std::pair<char,int>('z',200) );
 	std::pair<std::map<char,int>::iterator,bool> ret;
 	ret = mymap.insert ( std::pair<char,int>('z',500) );
-	if (ret.second==false) {
+	if (ret.second == false) {
 		std::cout << "element 'z' already existed";
 		std::cout << " with a value of " << ret.first->second << '\n';
 	}
@@ -916,7 +909,7 @@ int main()
 	ft_mymap.insert ( ft::pair<char,int>('z',200) );
 	ft::pair<Map<char,int>::iterator,bool> ft_ret;
 	ft_ret = ft_mymap.insert ( ft::pair<char,int>('z',500) );
-	if (ft_ret.second==false) {
+	if (ft_ret.second == false) {
 		std::cout << "element 'z' already existed";
 		std::cout << " with a value of " << ft_ret.first->second << '\n';
 	}

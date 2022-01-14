@@ -5,9 +5,7 @@
 #include "../ft_utils.h"
 #include "MapIterator.hpp"
 #include "../Vector/ReverseIterator.hpp"
-
-//https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
-
+#include "Pair.hpp"
 namespace ft
 {
 	template<class Key, class Val, class KeyOfValue, class Compare, class Allocator = std::allocator<Val> >

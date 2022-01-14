@@ -4,7 +4,6 @@
 #include <sstream>
 #include <string>
 
-
 namespace ft {
 
 	template<class T>
